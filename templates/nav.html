@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neumorphic Navbar</title>
+    <style>
+        /*
+        ========================================
+        CSS Custom Properties (Neumorphic Theme)
+        ========================================
+        This theme is defined by a primary background color and its
+        corresponding light and dark shadow colors. Text and accent colors
+        are chosen to be accessible.
+        */
+        :root {
+            --color-background: #e0e5ec;
+            --color-text: #5b667a;
+            --color-primary: #007bff;
+            
+            /* The key to neumorphism: light and dark shadows */
+            --color-light-shadow: rgba(255, 255, 255, 0.9);
+            --color-dark-shadow: rgba(163, 177, 198, 0.6);
+
+            --font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-weight-bold: 600;
+
+            /* Neumorphism requires soft shapes */
+            --border-radius-soft: 12px;
+            
+            --navbar-height: 80px;
+            --navbar-padding: 1.5rem;
+            --container-width: 1140px;
+            --transition-speed: 0.2s;
+        }
+
+        /*
+        ========================================
+        Global Resets & Neumorphic Base Styles
+        ========================================
+        */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-family-sans-serif);
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--color-text);
+            /* This is critical: the body must have the base color for the effect to work. */
+            background-color: var(--color-background);
+        }
+
+        /* Add some placeholder content */
+        body::after {
+            content: 'Scroll down to observe the navbar. The neumorphic effect is created with carefully layered box-shadows on a soft, off-white background.';
+            display: block;
+            text-align: center;
+            height: 200vh;
+            padding: 5rem 1rem;
+            color: #9aa7bb;
+        }
+        
+        ul { list-style: none; margin: 0; padding: 0; }
+        a { text-decoration: none; color: inherit; }
+
+        /*
+        ========================================
+        Main Navbar Structure
+        ========================================
+        The main navbar gets the "extruded" or "pushed out" effect.
+        */
+        .navbar {
+            height: var(--navbar-height);
+            display: flex;
+            align-items: center;
+            background-color: var(--color-background);
+            box-shadow: 6px 6px 12px var(--color-dark-shadow),
+                       -6px -6px 12px var(--color-light-shadow);
+        }
+
+        .navbar__container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--navbar-padding);
+        }
+        
+        .navbar__brand {
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+        }
+
+        /*
+        ========================================
+        Mobile Menu & Hamburger Toggle
+        ========================================
+        The toggle button is a prime example of a neumorphic element.
+        */
+        .navbar__toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: var(--border-radius-soft);
+            background: var(--color-background);
+            cursor: pointer;
+            z-index: 1001; 
+            box-shadow: 4px 4px 8px var(--color-dark-shadow),
+                       -4px -4px 8px var(--color-light-shadow);
+            transition: box-shadow var(--transition-speed) ease;
+        }
+        
+        /* On press, the button looks "pushed in" */
+        .navbar__toggle:active,
+        .navbar__toggle.is-active {
+            box-shadow: inset 4px 4px 8px var(--color-dark-shadow),
+                        inset -4px -4px 8px var(--color-light-shadow);
+        }
+
+        .navbar__toggle .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--color-text);
+            transition: all var(--transition-speed) ease-in-out;
+            border-radius: 3px;
+        }
+
+        /* Use relative positioning for easier transform origin control */
+        .navbar__toggle .bar {
+            position: relative;
+        }
+
+        .navbar__toggle .bar::before,
+        .navbar__toggle .bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-text);
+            border-radius: 3px;
+            transition: transform var(--transition-speed) ease-in-out;
+        }
+
+        .navbar__toggle .bar::before { transform: translateY(-8px); }
+        .navbar__toggle .bar::after { transform: translateY(8px); }
+
+        /* 'X' animation on active state */
+        .navbar__toggle.is-active .bar { background-color: transparent; }
+        .navbar__toggle.is-active .bar::before { transform: translateY(0) rotate(45deg); }
+        .navbar__toggle.is-active .bar::after { transform: translateY(0) rotate(-45deg); }
+        
+        .navbar__menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            position: absolute;
+            top: var(--navbar-height);
+            left: 0;
+            background-color: var(--color-background);
+            padding: 1rem 0;
+            box-shadow: 6px 6px 12px var(--color-dark-shadow);
+            z-index: 1000;
+        }
+        
+        .navbar__menu.is-active { display: flex; }
+
+        .navbar__item { text-align: center; }
+
+        .navbar__link {
+            display: block;
+            padding: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            transition: color var(--transition-speed) ease;
+        }
+        
+        .navbar__link:hover, .navbar__link:focus {
+             color: var(--color-primary);
+        }
+        
+        /* A clearly visible, accessible focus outline */
+        :is(.navbar__toggle, .navbar__link):focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 4px;
+            border-radius: var(--border-radius-soft);
+        }
+        
+        /* Remove default button focus for aesthetic harmony with focus-visible */
+        .navbar__toggle:focus {
+            outline: none;
+        }
+
+        /*
+        ========================================
+        Desktop Navbar Styles (Responsive)
+        ========================================
+        */
+        @media (min-width: 768px) {
+            .navbar__toggle {
+                display: none;
+            }
+
+            .navbar {
+                box-shadow: none; /* The main bar becomes flat */
+                background: transparent;
+            }
+
+            .navbar__menu {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                position: static;
+                width: auto;
+                background-color: transparent;
+                padding: 0;
+                box-shadow: none;
+            }
+
+            .navbar__list {
+                display: flex;
+                align-items: center;
+            }
+
+            .navbar__item { margin-left: 0.5rem; }
+
+            .navbar__link {
+                display: block;
+                padding: 0.75rem 1.25rem;
+                border-radius: var(--border-radius-soft);
+                box-shadow: 4px 4px 8px var(--color-dark-shadow),
+                           -4px -4px 8px var(--color-light-shadow);
+                transition: box-shadow var(--transition-speed) ease, color var(--transition-speed) ease;
+            }
+
+            /* The "pushed in" effect on hover/focus */
+            .navbar__link:hover, .navbar__link:focus, .navbar__link--active {
+                box-shadow: inset 4px 4px 8px var(--color-dark-shadow),
+                            inset -4px -4px 8px var(--color-light-shadow);
+                color: var(--color-primary);
+            }
+
+            .navbar__item--cta { margin-left: 1rem; }
+
+            .navbar__link--cta {
+                font-weight: var(--font-weight-bold);
+                color: var(--color-primary);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" role="banner">
+        <div class="navbar__container">
+            <a href="#" class="navbar__brand">StudyZen</a>
+            
+            <button class="navbar__toggle" 
+                    id="navbarToggle" 
+                    aria-label="Toggle navigation" 
+                    aria-controls="navbarMenu" 
+                    aria-expanded="false">
+                <span class="bar"></span>
+            </button>
+            
+            <nav id="navbarMenu" class="navbar__menu" role="navigation" aria-labelledby="navbarToggle">
+                <ul class="navbar__list">
+                    <!-- Added a class for the active link demonstration on desktop -->
+                    <li class="navbar__item"><a href="#" class="navbar__link navbar__link--active">Home</a></li>
+                    <li class="navbar__item"><a href="#" class="navbar__link">Community</a></li>
+                    <li class="navbar__item"><a href="#" class="navbar__link">About</a></li>
+                    <li class="navbar__item navbar__item--cta">
+                        <a href="#" class="navbar__link navbar__link--cta">Login</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <script>
+        // A self-contained, accessible script to toggle the mobile menu.
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbarToggle = document.getElementById('navbarToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+
+            if (navbarToggle && navbarMenu) {
+                navbarToggle.addEventListener('click', function () {
+                    // Toggle the .is-active class on both the toggle button and the menu
+                    navbarToggle.classList.toggle('is-active');
+                    navbarMenu.classList.toggle('is-active');
+
+                    // Update the aria-expanded attribute for screen readers
+                    const isExpanded = navbarToggle.getAttribute('aria-expanded') === 'true';
+                    navbarToggle.setAttribute('aria-expanded', !isExpanded);
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>s
