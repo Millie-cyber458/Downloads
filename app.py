@@ -16,7 +16,7 @@ def get_live_classes():
 
     @app.route('/')
     def home():
-        LiveClass = get_live_class()
+        LiveClass = get_live_classes()
         return render_template('home.html', LiveClass=LiveClass)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
