@@ -1,9 +1,12 @@
-<div class="border-left" style="margin:16px;" >
+{% for class in LiveClass%}
+<div class="border-left" style="margin-top:16px;" >
     <h4>
-        {{LiveClass['title']}}
+        {{class['title']}}
     </h4>
-    <b>From: {{LiveClass['from']}}</b>
-    <b>To: {{LiveClass['to']}}</b>
-    <p>{{LiveClass['description']}}</p>
-    <a href="{{LiveClass['link']}}" class="btn btn-primary">Join Now</a>
+    <b>From: {{class['start_time']}}</b>
+    <b>To: {{class['end_time']}}</b>
+    <p>{{class['description']}}</p>
+    <a href="{{class['link']}}" class="btn btn-primary">Join Now</a>
 </div>
+
+{% endfor %}

@@ -19,7 +19,7 @@ def get_live_classes():
         LiveClass = get_live_class()
         return render_template('home.html', LiveClass=LiveClass)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
 
 
 
