@@ -1,35 +1,223 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>StudyZen</title>
+<title>CommuteGrid</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Condensed:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
+<style>
+  :root{
+    --bg:#1F2124;
+    --bg-raised:#26282B;
+    --ink:#F5F4F0;
+    --ink-dim:#A9ACB0;
+    --amber:#E0A526;
+    --teal:#2E8C8C;
+    --coral:#D9634F;
+    --rule:#3A3D41;
+  }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+  }
+  h1,h2,h3,.display-headline{
+    font-family:'Archivo Condensed',sans-serif;
+    font-weight:700;
+    letter-spacing:0.01em;
+    line-height:1.05;
+  }
+  .cg-hero{ padding:96px 0 72px; border-bottom:1px solid var(--rule); }
+  .cg-eyebrow{ color:var(--ink-dim); font-size:0.95rem; margin-bottom:14px; }
+  .cg-headline{ font-size:3.4rem; max-width:640px; }
+  .cg-sub{ color:var(--ink-dim); max-width:480px; font-size:1.05rem; margin-top:20px; }
+  .cg-cta{ margin-top:32px; display:flex; gap:14px; }
+  .btn-line{ border-radius:2px; padding:10px 22px; font-weight:600; border:none; }
+  .btn-amber{ background:var(--amber); color:#1F2124; }
+  .btn-amber:hover{ background:#c98f1f; color:#1F2124; }
+  .btn-outline-line{ background:transparent; border:1px solid var(--ink-dim); color:var(--ink); }
+  .btn-outline-line:hover{ border-color:var(--ink); color:var(--ink); background:rgba(255,255,255,0.04); }
+
+  /* schematic line diagram */
+  .cg-diagram{ position:relative; height:260px; }
+  .cg-track{ position:absolute; left:0; right:0; height:4px; border-radius:2px; }
+  .cg-track.amber{ top:40px; background:var(--amber); }
+  .cg-track.teal{ top:120px; background:var(--teal); }
+  .cg-track.coral{ top:200px; background:var(--coral); }
+  .cg-stop{ position:absolute; width:14px; height:14px; border-radius:50%; background:var(--bg); border:3px solid var(--ink); transform:translate(-7px,-7px); }
+
+  .cg-section{ padding:72px 0; border-bottom:1px solid var(--rule); }
+  .cg-label{ text-transform:none; color:var(--ink-dim); font-size:0.95rem; margin-bottom:8px; }
+
+  /* joined companies strip */
+  .cg-companies{ display:flex; flex-wrap:wrap; gap:28px; align-items:center; }
+  .cg-company-pill{
+    border:1px solid var(--rule); border-radius:2px; padding:8px 16px;
+    color:var(--ink-dim); font-size:0.95rem;
+  }
+
+  /* how it works — transit stops */
+  .cg-step{ display:flex; gap:20px; padding:22px 0; border-top:1px solid var(--rule); }
+  .cg-step:first-child{ border-top:none; }
+  .cg-step-line{ width:6px; border-radius:3px; flex-shrink:0; }
+  .cg-step-line.amber{ background:var(--amber); }
+  .cg-step-line.teal{ background:var(--teal); }
+  .cg-step-line.coral{ background:var(--coral); }
+  .cg-step h3{ font-size:1.4rem; margin-bottom:6px; }
+  .cg-step p{ color:var(--ink-dim); margin:0; max-width:560px; }
+
+  /* two-track value */
+  .cg-track-card{ padding:28px; border:1px solid var(--rule); border-radius:2px; height:100%; }
+  .cg-track-card h3{ font-size:1.6rem; margin-bottom:14px; }
+  .cg-track-card ul{ padding-left:18px; color:var(--ink-dim); }
+  .cg-track-card.employee{ border-top:4px solid var(--teal); }
+  .cg-track-card.company{ border-top:4px solid var(--coral); }
+
+  /* trust block */
+  .cg-trust{ background:var(--bg-raised); border:1px solid var(--amber); border-radius:2px; padding:40px; }
+  .cg-trust h2{ color:var(--amber); }
+
+  .cg-stat{ font-family:'Archivo Condensed',sans-serif; font-size:2.6rem; font-weight:700; color:var(--teal); }
+
+  footer{ padding:32px 0; color:var(--ink-dim); font-size:0.9rem; }
+</style>
 </head>
-<body style="background-color: rgb(240, 240, 240);">
-     {% include 'nav.html' %}
-    <div class="container my-5">
-        <h6 class="text-uppercase text-muted fw-bold">STUDY TOGETHER. GROW TOGETHER.</h6>
-        <h1 class="display-4 fw-bold">Study Together.
-            Grow Together.
-        </h1>
-  <p> Welcome to StudyZen-- a friendly space where students can find study groups, share knowledge and learn together.</p>
+<body>
+{% include 'nav.html' %}
+
+<!-- HERO -->
+<section class="cg-hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <p class="cg-eyebrow">A shared commute network for companies in the same area</p>
+        <h1 class="cg-headline">Same roads.<br>Verified rides.<br>One grid.</h1>
+        <p class="cg-sub">CommuteGrid lets companies in one area jointly operate driver-verified commutes for their employees — safer than hiring alone, cheaper than going it alone, and fewer cars on the road.</p>
+        <div class="cg-cta">
+          <a href="#employees" class="btn btn-line btn-amber">I'm an employee</a>
+          <a href="#companies" class="btn btn-line btn-outline-line">I represent a company</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="cg-diagram">
+          <div class="cg-track amber"></div>
+          <div class="cg-track teal"></div>
+          <div class="cg-track coral"></div>
+          <div class="cg-stop" style="left:8%; top:40px;"></div>
+          <div class="cg-stop" style="left:42%; top:40px;"></div>
+          <div class="cg-stop" style="left:78%; top:40px;"></div>
+          <div class="cg-stop" style="left:20%; top:120px;"></div>
+          <div class="cg-stop" style="left:58%; top:120px;"></div>
+          <div class="cg-stop" style="left:88%; top:120px;"></div>
+          <div class="cg-stop" style="left:12%; top:200px;"></div>
+          <div class="cg-stop" style="left:48%; top:200px;"></div>
+          <div class="cg-stop" style="left:82%; top:200px;"></div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
+<!-- JOINED COMPANIES -->
+<section class="cg-section">
+  <div class="container">
+    <p class="cg-label">Already on the grid</p>
+    <div class="cg-companies">
+      {% for company in Companies %}
+      <span class="cg-company-pill">{{ company['name'] }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
-<div>
-{% include 'Liveclass.html' %}
-</div>
+<!-- HOW IT WORKS -->
+<section class="cg-section">
+  <div class="container">
+    <h2 class="mb-4">How the grid works</h2>
+    <div class="cg-step">
+      <div class="cg-step-line amber"></div>
+      <div>
+        <h3>Companies join the grid</h3>
+        <p>Nearby companies opt into a shared commute zone instead of sourcing drivers on their own.</p>
+      </div>
+    </div>
+    <div class="cg-step">
+      <div class="cg-step-line teal"></div>
+      <div>
+        <h3>Drivers get jointly verified</h3>
+        <p>Background checks and verification are shared across every company on the grid, not repeated by each one alone.</p>
+      </div>
+    </div>
+    <div class="cg-step">
+      <div class="cg-step-line coral"></div>
+      <div>
+        <h3>Employees pick a zone and ride</h3>
+        <p>Employees choose the pickup zone closest to them and book a seat on a verified route.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- TWO TRACK VALUE -->
+<section class="cg-section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6" id="employees">
+        <div class="cg-track-card employee">
+          <h3>For employees</h3>
+          <ul>
+            <li>Ride with a driver verified through the grid, not an unknown app driver</li>
+            <li>Fixed pickup zones and times — no address shared with drivers or other riders</li>
+            <li>Shared with coworkers from other grid companies on the same route</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6" id="companies">
+        <div class="cg-track-card company">
+          <h3>For companies</h3>
+          <ul>
+            <li>Share verification and liability instead of vetting drivers alone</li>
+            <li>Lower cost per employee by pooling routes with neighboring companies</li>
+            <li>Fewer vehicles arriving at your office park each day</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- TRUST BLOCK -->
+<section class="cg-section">
+  <div class="container">
+    <div class="cg-trust">
+      <h2>Verification is shared, not assumed</h2>
+      <p class="cg-sub" style="color:var(--ink-dim);">Every driver on the grid is verified once, by the joint venture of participating companies — not re-checked, or skipped, by each company separately.</p>
+    </div>
+  </div>
+</section>
 
-<div>
-    <p class="mt-4">Join our live classes and interact with instructors and fellow students in real-time.</p>
-    <p>Copyright 2026, StudyZen. All rights reserved.</p>
-</div>
-<!-- Bootstrap JS Bundle (Required for Navbar to collapse on mobile) -->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- ENVIRONMENT -->
+<section class="cg-section" style="border-bottom:none;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <div class="cg-stat">1 car</div>
+        <p class="cg-sub">carries riders who'd otherwise arrive in several</p>
+      </div>
+      <div class="col-md-8">
+        <p class="cg-sub" style="max-width:640px;">Shared routes mean fewer vehicles competing for parking and road space around the same office park, every working day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Copyright 2026, CommuteGrid. All rights reserved.
+  </div>
+</footer>
+
 </body>
-
 </html>
